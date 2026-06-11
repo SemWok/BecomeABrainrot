@@ -1,7 +1,7 @@
 --==========================================================
--- BECOME A BRAINROT (LORI NIGHTMARE HUB - AUTO)
+-- BECOME A BRAINROT (STABILIZED & FIXED - 4 DETIK)
 --==========================================================
-local P, CG = game:GetService("Players"), game:GetService("CoreGui")
+local P, CG, TS = game:GetService("Players"), game:GetService("CoreGui"), game:GetService("TweenService")
 local LP = P.LocalPlayer
 
 -- [ UI BUILDER ]
@@ -37,45 +37,45 @@ local function B_Toggle(p,t,func)
     return b 
 end
 
--- [ MAIN UI ]
-local MC = F("L", UDim2.new(0.05,0,0.2,0), UDim2.new(0,250,0,150), "BECOME A BRAINROT")
+local MC = F("L", UDim2.new(0.05,0,0.2,0), UDim2.new(0,250,0,230), "BECOME A BRAINROT")
 
--- 1. Auto Respawn Loop (Coldown 8 detik)
+-- [ LOGIKA AUTO RESPAWN ]
 _G.RespawnToggle = false
 B_Toggle(MC, "Auto Respawn", function(a) 
     _G.RespawnToggle = a 
-    task.spawn(function()
-        while _G.RespawnToggle do
-            if LP.Character and LP.Character:FindFirstChild("Humanoid") then
-                LP.Character.Humanoid.Health = 0
-            end
-            task.wait(8) -- Coldown 8 detik
-        end
-    end)
 end)
 
--- 2. Claim Brainrot Machine
+-- Loop Utama (4 Detik)
+task.spawn(function()
+    while true do
+        if _G.RespawnToggle then
+            local char = LP.Character
+            if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("Humanoid") and char.Humanoid.Health > 0 then
+                -- Teleport ke koordinat target
+                char.HumanoidRootPart.CFrame = CFrame.new(156, 3, -0.1)
+                
+                -- Tunggu 4 detik
+                task.wait(4)
+                
+                -- Reset/Mati
+                if char and char:FindFirstChild("Humanoid") then
+                    char.Humanoid.Health = 0
+                end
+            end
+        end
+        task.wait(0.5)
+    end
+end)
+
+-- [ FITUR LAIN ]
 _G.ClaimToggle = false
-B_Toggle(MC, "Claim Brainrot Machine", function(a) 
-    _G.ClaimToggle = a 
-    task.spawn(function()
-        while _G.ClaimToggle and task.wait(0.5) do
-            local event = game:GetService("ReplicatedStorage"):FindFirstChild("Events")
-            if event then
-                event:WaitForChild("WeatherMachineRetrieve"):FireServer(1)
-            end
-        end
-    end)
-end)
+B_Toggle(MC, "Claim Brainrot Machine", function(a) _G.ClaimToggle = a task.spawn(function() while _G.ClaimToggle and task.wait(0.5) do local e = game:GetService("ReplicatedStorage"):FindFirstChild("Events") if e then e:WaitForChild("WeatherMachineRetrieve"):FireServer(1) end end end) end)
+_G.SpeedToggle = false
+B_Toggle(MC, "Auto Buy Speed 100x", function(a) _G.SpeedToggle = a task.spawn(function() while _G.SpeedToggle and task.wait(0.5) do game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("BuySpeed"):FireServer(100) end end) end)
+_G.RebirthToggle = false
+B_Toggle(MC, "Auto Rebirth", function(a) _G.RebirthToggle = a task.spawn(function() while _G.RebirthToggle and task.wait(1) do game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Rebirth"):FireServer() end end) end)
 
--- 3. YouTube: SemWok
 local label = Instance.new("TextLabel", MC)
-label.Size = UDim2.new(1, 0, 0, 30)
-label.Position = UDim2.new(0, 10, 0, 80)
-label.BackgroundTransparency = 1
-label.RichText = true
-label.Text = "<b>YouTube: SemWok</b>"
-label.TextColor3 = Color3.fromRGB(255, 255, 255)
-label.Font = Enum.Font.SourceSansBold
-label.TextSize = 18
-label.TextXAlignment = 0
+label.Size = UDim2.new(1, 0, 0, 30); label.Position = UDim2.new(0, 10, 0, 160); label.BackgroundTransparency = 1
+label.RichText = true; label.Text = "<b>YouTube: SemWok</b>"; label.TextColor3 = Color3.fromRGB(255, 255, 255)
+label.Font = Enum.Font.SourceSansBold; label.TextSize = 18; label.TextXAlignment = 0
