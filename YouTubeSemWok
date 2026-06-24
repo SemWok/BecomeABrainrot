@@ -1,1 +1,1 @@
-game.Players.LocalPlayer:Kick("The script has been patched, please wait for an update SCRIPT BY *YouTube SemWok*")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/SemWok/Idk/refs/heads/main/YouTubeSemWok"))()
